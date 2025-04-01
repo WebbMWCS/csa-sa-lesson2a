@@ -92,17 +92,32 @@ public class UrbanExplorer {
         String newCity = inputField.getText();
 
         if (!newCity.isEmpty()) {
-            cities.add(new City(newCity));
-            refreshList();
-            inputField.clear();
+            boolean cityExists = cities.stream()
+                                   .anyMatch(city -> city.getName().equalsIgnoreCase(newCity));
+
+            if (!cityExists) {
+                cities.add(new City(newCity));
+                refreshList();
+                sortCities();
+                inputField.clear();
+            } else {
+                System.out.println("City already exists!");
+            }
         }
     }
-
     /**
      * Sorts the cities in the 'cities' list based on their names.
      */
     public void sortCities() {
-        
+     for(int i = 0; i < cities.size()-1; i++) {
+         for(int j = i + 1; j < cities.size(); j++) {
+             if(cities.get(i).getName().compareTo(cities.get(j).getName()) > 0) {
+                 City temp = cities.get(i);
+                 cities.set(i, cities.get(j));
+                 cities.set(j, temp);
+             }
+         }
+     }
 
     }
 
